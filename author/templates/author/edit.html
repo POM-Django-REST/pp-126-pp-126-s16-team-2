@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Author</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .field { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input[type="text"] { padding: 8px; width: 300px; }
+        .error { color: red; }
+        .book-list { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Edit Author</h1>
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="field">
+            <label>First Name*:</label>
+            <input type="text" name="name" value="{{ author.name }}" required>
+        </div>
+
+        <div class="field">
+            <label>Last Name*:</label>
+            <input type="text" name="surname" value="{{ author.surname }}" required>
+        </div>
+
+        <div class="field">
+            <label>Middle Name:</label>
+            <input type="text" name="patronymic" value="{{ author.patronymic|default:'' }}">
+        </div>
+
+        <div class="book-list">
+            <h3>Books:</h3>
+            {% for book in all_books %}
+            <label>
+                <input type="checkbox" name="books" value="{{ book.id }}"
+                       {% if book in author.books.all %}checked{% endif %}>
+                {{ book.name }}
+            </label><br>
+            {% endfor %}
+        </div>
+
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+
+        <button type="submit">Save</button>
+        <a href="{% url 'author_list' %}">Cancel</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ book.name }}</title>
+</head>
+<body>
+    <h1>{{ book.name }}</h1>
+    <p><strong>Description:</strong> {{ book.description }}</p>
+    <p><strong>Count:</strong> {{ book.count }}</p>
+
+    <h2>Authors:</h2>
+    <ul>
+        {% for author in book.authors.all %}
+        <li>{{ author.name }} {{ author.surname }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'book_edit' book.id %}">Edit</a>
+    <a href="{% url 'book_list' %}">Back to list</a>
+</body>
+</html>

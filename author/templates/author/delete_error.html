@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deletion error</title>
+    <style>
+        .error { color: #d9534f; }
+    </style>
+</head>
+<body>
+    <h1 class="error">Can't remove author {{ author.name }} {{ author.surname }}!</h1>
+    <p>The author has {{ author.books.count }} related books. Remove them first.</p>
+    <a href="{% url 'author_list' %}">Back to list</a>
+</body>
+</html>
