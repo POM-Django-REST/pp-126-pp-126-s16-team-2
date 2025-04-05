@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Author
+from .forms import AuthorForm
 from django.shortcuts import get_object_or_404
 from book.models import Book
 
@@ -10,12 +11,13 @@ def author_list(request):
 
 def author_create(request):
     if request.method == "POST":
-        name = request.POST.get("name")
-        surname = request.POST.get("surname")
-        Author.objects.create(name=name, surname=surname)
-        return redirect("author_list")
-    return render(request, "author/create.html")
-
+        form = AuthorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("author_list")
+    else:
+        form = AuthorForm()
+    return render(request, "author/create.html", {"form": form})
 
 def author_delete(request, author_id):
     author = get_object_or_404(Author, id=author_id)
@@ -34,32 +36,14 @@ def author_edit(request, author_id):
     author = get_object_or_404(Author, id=author_id)
 
     if request.method == "POST":
-        author.name = request.POST.get("name")
-        author.surname = request.POST.get("surname")
-        author.save()
-        selected_books = request.POST.getlist("books")
-        author.books.set(selected_books)
-        return redirect("author_list")
+        form = AuthorForm(request.POST, instance=author)
+        if form.is_valid():
+            form.save()
+            return redirect("author_list")
+    else:
+        form = AuthorForm(instance=author)
+    return render(request, "author/edit.html", {"form": form})
 
-    return render(request, "author/edit.html", {"author": author})
-
-
-def author_edit(request, author_id):
-    author = get_object_or_404(Author, id=author_id)
-    all_books = Book.objects.all()
-
-    if request.method == "POST":
-        author.name = request.POST.get("name")
-        author.surname = request.POST.get("surname")
-        author.save()
-        selected_books = request.POST.getlist("books")
-        author.books.set(selected_books)
-        return redirect("author_list")
-
-    return render(request, "author/edit.html", {
-        "author": author,
-        "all_books": all_books
-    })
 
 def author_books(request, author_id):
     author = get_object_or_404(Author, id=author_id)
