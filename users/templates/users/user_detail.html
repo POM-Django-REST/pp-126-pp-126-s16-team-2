@@ -8,19 +8,25 @@
     <p><strong>Ім'я:</strong> {{ user.first_name }}</p>
     <p><strong>Прізвище:</strong> {{ user.last_name }}</p>
     <p><strong>Ел. пошта:</strong> {{ user.email }}</p>
-    <p><strong>Кількість переглянутих книг:</strong> {{ user.viewed_books }}</p>
-    <p><strong>Кількість взятих книг:</strong> {{ user.borrowed_books }}</p>
-    <p><strong>Кількість повернутих книг:</strong> {{ user.returned_books }}</p>
 
-    <h2>Назви книг, взятих користувачем:</h2>
+    <h2>Книги, переглянуті користувачем:</h2>
     <ul>
-        {% for book in user.library_member.borrowed_books.all %}
+        {% for book in user.viewed_books.all %}
+            <li>{{ book.title }}</li>
+        {% empty %}
+            <li>Користувач ще не переглянув жодної книги.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Книги, взяті користувачем:</h2>
+    <ul>
+        {% for book in user.borrowed_books.all %}
             <li>{{ book.name }}</li>
         {% empty %}
             <li>Користувач ще не брав жодної книги.</li>
         {% endfor %}
     </ul>
 
-    <a href="{% url 'user_list' %}">Повернутися до списку користувачів</a>
+    <a href="{% url 'user_list' %}" class="btn btn-secondary">Повернутися до списку користувачів</a>
 </body>
 </html>

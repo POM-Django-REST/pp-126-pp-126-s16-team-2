@@ -1,16 +1,27 @@
 from django.db import models
-from django.conf import settings  # Використання AUTH_USER_MODEL
 from author.models import Author
-import random  # Імпорт random для тестових даних
+from django.contrib.auth import get_user_model
+import random
+
+User = get_user_model()
 
 
 class Book(models.Model):
+    title = models.CharField(max_length=255, default="Default Title")
+
+    borrowed_by_users = models.ManyToManyField(
+        User, related_name='borrowed_books', blank=True
+    )
+    viewed_by_users = models.ManyToManyField(
+        User, related_name='viewed_books', blank=True
+    )
     name = models.CharField(max_length=128, blank=True)
     description = models.TextField(max_length=256, blank=True)
     count = models.IntegerField(default=10)
-    authors = models.ManyToManyField('author.Author', related_name='book_authors', blank=True)  # Додано blank=True
+    authors = models.ManyToManyField(
+        Author, related_name='book_authors', blank=True
+    )
     id = models.AutoField(primary_key=True)
-    borrowed_books = models.IntegerField(default=0)
 
     class Meta:
         permissions = [
@@ -19,17 +30,34 @@ class Book(models.Model):
         ]
 
     def __str__(self):
-        return self.name
+        return self.name or self.title
 
-    def __repr__(self):
-        return f"Book(id={self.id}, name={self.name})"
+    def add_viewed_user(self, user):
+        """Додає одного користувача до списку тих, хто переглянув книгу."""
+        if user not in self.viewed_by_users.all():
+            self.viewed_by_users.add(user)
+
+    def add_borrowed_user(self, user):
+        """Додає одного користувача до списку тих, хто взяв книгу."""
+        if user not in self.borrowed_by_users.all():
+            self.borrowed_by_users.add(user)
+
+    def set_viewed_users(self, user_list):
+        """Оновлює список користувачів, які переглянули книгу."""
+        self.viewed_by_users.set(user_list)
+
+    def set_borrowed_users(self, user_list):
+        """Оновлює список користувачів, які взяли книгу."""
+        self.borrowed_by_users.set(user_list)
 
     @staticmethod
     def get_by_id(book_id):
+        """Отримує книгу за ID."""
         return Book.objects.filter(id=book_id).first()
 
     @staticmethod
     def delete_by_id(book_id):
+        """Видаляє книгу за ID."""
         book = Book.get_by_id(book_id)
         if book:
             book.delete()
@@ -38,17 +66,20 @@ class Book(models.Model):
 
     @staticmethod
     def create(name, description, count=10, authors=None):
+        """Створює нову книгу."""
         if len(name) > 128:
             return None
 
-        book = Book.objects.create(name=name, description=description, count=count)
+        book = Book.objects.create(
+            name=name, description=description, count=count
+        )
         if authors:
-            for author in authors:
-                book.authors.add(author)
+            book.authors.set(authors)
         return book
 
     @staticmethod
     def filter_books(name=None, author_id=None, count_min=None, count_max=None):
+        """Фільтрує книги за різними критеріями."""
         books = Book.objects.all()
         if name:
             books = books.filter(name__icontains=name)
@@ -60,85 +91,49 @@ class Book(models.Model):
             books = books.filter(count__lte=count_max)
         return books
 
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'description': self.description,
-            'count': self.count,
-            'authors': [author.to_dict() for author in self.authors.all()]
-        }
-
-    def update(self, name=None, description=None, count=None):
-        if name is not None:
-            self.name = name
-        if description is not None:
-            self.description = description
-        if count is not None:
-            self.count = count
-        self.save()
-
-    def add_authors(self, authors):
-        if authors:
-            for author in authors:
-                self.authors.add(author)
-
-    def remove_authors(self, authors):
-        if authors:
-            for author in authors:
-                self.authors.remove(author)
-
-    def borrow_book(self):
-        if self.available_books > 0:
-            self.borrowed_books += 1
-            self.save()
-        else:
-            raise ValueError("No available copies to borrow.")
-
-    @staticmethod
-    def get_all():
-        return list(Book.objects.all())
-
-    def get_available_count(self):
-        return self.count - self.borrowed_books
+    @property
+    def available_books(self):
+        """Повертає кількість доступних книг."""
+        return self.count - self.borrowed_by_users.count()
 
     @staticmethod
     def generate_test_data(num=10):
+        """Генерує тестові дані для книг."""
         for _ in range(num):
             name = f"Book {random.randint(1, 1000)}"
             description = f"Description {random.randint(1, 1000)}"
             count = random.randint(1, 50)
-            book = Book.objects.create(name=name, description=description, count=count)
+            book = Book.objects.create(
+                name=name, description=description, count=count
+            )
 
             authors = list(Author.objects.all())
             if authors:
-                random_authors = random.sample(authors, min(len(authors), random.randint(1, 3)))
+                random_authors = random.sample(
+                    authors, min(len(authors), random.randint(1, 3))
+                )
                 book.authors.set(random_authors)
-
-    @property
-    def available_books(self):
-        return self.count - self.borrowed_books
 
 
 class LibraryMember(models.Model):
-    user = models.OneToOneField('users.User', on_delete=models.CASCADE, related_name='library_member')
-    borrowed_books = models.ManyToManyField(Book, through='BorrowedBook', related_name='borrowed_by_members')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='library_member'
+    )
+    borrowed_books = models.ManyToManyField(
+        Book, through='BorrowedBook', related_name='borrowed_by_members'
+    )
 
     def __str__(self):
         return f"{self.user.email} ({self.user.first_name} {self.user.last_name})"
 
-    def __repr__(self):
-        return f"LibraryMember(user={self.user.email})"
-
 
 class BorrowedBook(models.Model):
-    member = models.ForeignKey(LibraryMember, on_delete=models.CASCADE, related_name='borrowed_entries')
+    member = models.ForeignKey(
+        LibraryMember, on_delete=models.CASCADE, related_name='borrowed_entries'
+    )
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     borrow_date = models.DateField(auto_now_add=True)
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f"{self.book.name} (x{self.quantity}) - {self.member.user.email}"
-
-    def __repr__(self):
-        return f"BorrowedBook(book={self.book.name}, member={self.member.user.email}, quantity={self.quantity})"
