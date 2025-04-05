@@ -4,11 +4,17 @@
     <title>Edit Author</title>
     <style>
         body { font-family: Arial; padding: 20px; }
-        .field { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; }
-        input[type="text"] { padding: 8px; width: 300px; }
+        form p { margin-bottom: 15px; }
         .error { color: red; }
         .book-list { margin-top: 20px; }
+        button {
+            background: #4682b4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        a { color: #4682b4; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -16,30 +22,26 @@
     <form method="POST">
         {% csrf_token %}
 
-        <div class="field">
-            <label>First Name*:</label>
-            <input type="text" name="name" value="{{ author.name }}" required>
-        </div>
+        <p>
+            {{ form.name.label_tag }}<br>
+            {{ form.name }}
+        </p>
 
-        <div class="field">
-            <label>Last Name*:</label>
-            <input type="text" name="surname" value="{{ author.surname }}" required>
-        </div>
+        <p>
+            {{ form.surname.label_tag }}<br>
+            {{ form.surname }}
+        </p>
 
-        <div class="field">
-            <label>Middle Name:</label>
-            <input type="text" name="patronymic" value="{{ author.patronymic|default:'' }}">
-        </div>
-
+        <p>
+            {{ form.patronymic.label_tag }}<br>
+            {{ form.patronymic }}
+        </p>
+        
         <div class="book-list">
             <h3>Books:</h3>
-            {% for book in all_books %}
-            <label>
-                <input type="checkbox" name="books" value="{{ book.id }}"
-                       {% if book in author.books.all %}checked{% endif %}>
-                {{ book.name }}
-            </label><br>
-            {% endfor %}
+            {{ form.books }}
+            <br>
+            <a href="{% url 'book_create' %}" target="_blank">Add a new book</a>
         </div>
 
         {% if error %}<p class="error">{{ error }}</p>{% endif %}

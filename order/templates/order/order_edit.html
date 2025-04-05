@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Order</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        form p { margin: 10px 0; }
+        button { 
+            background: #4682b4; 
+            color: white; 
+            padding: 10px 15px; 
+            border: none; 
+            cursor: pointer; }
+        a { color: #4682b4; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'order-list' %}">Order List</a>
+        <a href="{% url 'order-detail' order.id %}">Order Details</a>
+    </nav>
+
+    <h1>Edit Order</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+    <br>
+    <a href="{% url 'order-detail' order.id %}">Cancel</a>
+</body>
+</html>
