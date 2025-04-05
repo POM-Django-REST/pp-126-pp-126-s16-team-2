@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 # Тимчасова домашня сторінка
 def temporary_home(request):
-    return render(request, 'library/home.html')  # Виправлено шлях до шаблону домашньої сторінки
+    return render(request, 'home.html')  # Виправлено шлях до шаблону домашньої сторінки
 
 
 urlpatterns = [
