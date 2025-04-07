@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Book</title>
+    <style>
+        .field { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, textarea { padding: 8px; width: 300px; }
+    </style>
+</head>
+<body>
+    <h1>Create New Book</h1>
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="field">
+            <label>Title*:</label>
+            <input type="text" name="name" required>
+        </div>
+
+        <div class="field">
+            <label>Description:</label>
+            <textarea name="description"></textarea>
+        </div>
+
+        <div class="field">
+            <label>Count:</label>
+            <input type="number" name="count" value="10">
+        </div>
+
+        <div class="field">
+            <label>Authors:</label>
+            {% for author in authors %}
+            <label>
+                <input type="checkbox" name="authors" value="{{ author.id }}">
+                {{ author.name }} {{ author.surname }}
+            </label><br>
+            {% endfor %}
+        </div>
+
+        <button type="submit">Create</button>
+        <a href="{% url 'book_list' %}">Cancel</a>
+    </form>
+</body>
+</html>
