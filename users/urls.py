@@ -9,3 +9,7 @@ urlpatterns = [
 ]
 
 
+<<<<<<< HEAD
+=======
+#
+>>>>>>> Daniil

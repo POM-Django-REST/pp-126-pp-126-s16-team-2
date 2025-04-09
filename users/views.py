@@ -1,8 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
+<<<<<<< HEAD
 from users.models import User
 from users.forms import UserForm
 from book.models import Book
 
+=======
+from .models import User
+from .forms import UserForm
+from rest_framework import viewsets
+from .serializers import UserSerializer
+
+def get_book_model():
+    from book.models import Book
+    return Book
+>>>>>>> Daniil
 
 def user_list_view(request):
     """Відображає список всіх користувачів."""
@@ -67,3 +78,10 @@ def user_book_interaction(request, user_id):
         return redirect('user_detail', user_id=user_id)
 
     return render(request, "users/user_books.html", {"user": user, "books": books})
+<<<<<<< HEAD
+=======
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+>>>>>>> Daniil

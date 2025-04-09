@@ -22,18 +22,26 @@ def book_create(request):
         description = request.POST.get("description")
         count = request.POST.get("count", 10)
         author_ids = request.POST.getlist("authors")
+<<<<<<< HEAD
         new_author_name = request.POST.get("new_author")
 
         # Логування для перевірки даних
         print(f"Створюємо книгу: {name}, опис: {description}, кількість: {count}, автори: {author_ids}, новий автор: {new_author_name}")
 
         # Створення книги
+=======
+
+        # Логування для перевірки даних
+        print(f"Створюємо книгу: {name}, опис: {description}, кількість: {count}, автори: {author_ids}")
+
+>>>>>>> Daniil
         book = Book.objects.create(
             name=name,
             description=description,
             count=count
         )
 
+<<<<<<< HEAD
         # Додавання існуючих авторів
         if author_ids:
             book.authors.set(author_ids)
@@ -44,6 +52,12 @@ def book_create(request):
             book.authors.add(new_author)
 
         return redirect('book_list')  # Повернення до списку книг
+=======
+        if author_ids:
+            book.authors.set(author_ids)
+
+        return redirect('book_detail', book_id=book.id)
+>>>>>>> Daniil
 
     authors = Author.objects.all()
     return render(request, 'book/create.html', {'authors': authors})
@@ -70,7 +84,11 @@ def book_edit(request, book_id):
         # Логування після збереження
         print(f"Після редагування: {book.name}, автори: {book.authors.all()}")
 
+<<<<<<< HEAD
         return redirect('book_list')  # Повернення до списку книг
+=======
+        return redirect('book_detail', book_id=book.id)
+>>>>>>> Daniil
 
     return render(request, 'book/edit.html', {
         'book': book,
@@ -87,7 +105,11 @@ def book_delete(request, book_id):
         print(f"Видалення книги: {book.name}, автори: {book.authors.all()}")
 
         book.delete()
+<<<<<<< HEAD
         return redirect('book_list')  # Повернення до списку книг
+=======
+        return redirect('book_list')
+>>>>>>> Daniil
 
     return render(request, 'book/confirm_delete.html', {'book': book})
 
@@ -110,6 +132,7 @@ def book_filter(request):
         'authors': authors,
         'search_params': request.GET
     })
+<<<<<<< HEAD
 
 from rest_framework import generics
 from .models import Book
@@ -123,3 +146,5 @@ class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
+=======
+>>>>>>> Daniil

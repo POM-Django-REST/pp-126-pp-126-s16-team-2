@@ -6,11 +6,14 @@
         .field { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; }
         input, textarea { padding: 8px; width: 300px; }
+<<<<<<< HEAD
         .field-author { margin-bottom: 15px; }
         .btn { background-color: #007BFF; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
         .btn:hover { background-color: #0056b3; }
         a { margin-left: 10px; text-decoration: none; color: #007BFF; }
         a:hover { text-decoration: underline; }
+=======
+>>>>>>> Daniil
     </style>
 </head>
 <body>
@@ -43,6 +46,7 @@
             {% endfor %}
         </div>
 
+<<<<<<< HEAD
         <div class="field-author">
             <label>New Author:</label>
             <input type="text" name="new_author" placeholder="Enter new author's name">
@@ -53,3 +57,10 @@
     </form>
 </body>
 </html>
+=======
+        <button type="submit">Create</button>
+        <a href="{% url 'book_list' %}">Cancel</a>
+    </form>
+</body>
+</html>
+>>>>>>> Daniil

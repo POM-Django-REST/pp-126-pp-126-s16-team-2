@@ -1,5 +1,6 @@
 from django import forms
 from .models import Book, LibraryMember
+<<<<<<< HEAD
 from author.models import Author
 
 class BookForm(forms.ModelForm):
@@ -8,6 +9,8 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ['name', 'description', 'count', 'authors']
+=======
+>>>>>>> Daniil
 
 class LibraryMemberForm(forms.ModelForm):
     class Meta:

@@ -39,8 +39,13 @@ INSTALLED_APPS = [
     'book',
     'author',
     'order',
+<<<<<<< HEAD
     'users', 
     'rest_framework', # Додано для роботи з Django REST Framework
+=======
+    'users',  # Оновлене ім'я для додатку Users
+    'rest_framework',
+>>>>>>> Daniil
 ]
 
 # Вказуємо нову модель користувача
@@ -164,3 +169,15 @@ LOGGING = {
         },
     },
 }
+<<<<<<< HEAD
+=======
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+}
+>>>>>>> Daniil

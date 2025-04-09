@@ -51,6 +51,7 @@ def author_books(request, author_id):
     return render(request, 'author/author_books.html', {
         'author': author,
         'books': books
+<<<<<<< HEAD
     })
 
 from rest_framework import generics
@@ -64,3 +65,6 @@ class AuthorDetailView(generics.RetrieveUpdateDestroyAPIView):
 class AuthorCreateView(generics.CreateAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+=======
+    })
+>>>>>>> Daniil
