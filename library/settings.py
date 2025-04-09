@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'author',
     'order',
     'users',  # Оновлене ім'я для додатку Users
+    'rest_framework',
 ]
 
 # Вказуємо нову модель користувача
@@ -162,4 +163,13 @@ LOGGING = {
             'datefmt': '%d/%m/%Y %I:%M:%S'
         },
     },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
 }

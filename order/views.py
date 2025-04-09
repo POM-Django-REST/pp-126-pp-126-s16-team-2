@@ -1,6 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Order
 from .forms import OrderForm
+from rest_framework import viewsets
+from .serializers import OrderSerializer
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 def order_list(request):
     if not request.user.is_authenticated or request.user.role != 1:  # Перевірка ролі бібліотекаря
@@ -43,3 +47,24 @@ def order_edit(request, pk):
     else:
         form = OrderForm(instance=order)
     return render(request, "order/order_edit.html", {"form": form, "order": order})
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+class UserOrderViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        return Order.objects.filter(user_id=user_id)
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    @action(detail=True, methods=['get'], url_path='user/(?P<user_id>[^/.]+)/order')
+    def user_orders(self, request, user_id=None):
+        orders = self.queryset.filter(user_id=user_id)
+        serializer = self.get_serializer(orders, many=True)
+        return Response(serializer.data)
