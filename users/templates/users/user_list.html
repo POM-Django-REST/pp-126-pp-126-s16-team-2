@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Список користувачів{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center;">Список користувачів</h2>
+
+<!-- Додаємо посилання для повернення на головну сторінку -->
+<a href="/" style="text-decoration: underline; color: #007BFF; font-weight: bold; margin-bottom: 20px; display: inline-block;">Return to Home</a>
+
+<table border="1" style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 20px;">
+    <thead>
+        <tr>
+            <th>Ім'я</th>
+            <th>Прізвище</th>
+            <th>Ел. пошта</th>
+            <th>Переглянуті книги</th>
+            <th>Взяті книги</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                {% for book in user.viewed_books.all %}
+                    {{ book.title }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Немає переглянутих книг
+                {% endfor %}
+            </td>
+            <td>
+                {% for book in user.borrowed_books.all %}
+                    {{ book.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Немає взятих книг
+                {% endfor %}
+            </td>
+            <td>
+                <a href="{% url 'user_detail' user.id %}">Деталі</a> |
+                <a href="{% url 'edit_user' user.id %}">Редагувати</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align: center;">Список користувачів порожній.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div style="margin-top: 320px; text-align: center;">
+    <a href="{% url 'add_user' %}" class="btn btn-primary" style="text-decoration: none; padding: 10px 20px; background-color: #007BFF; color: white; border-radius: 5px;">Додати нового користувача</a>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Додати нового користувача{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center;">Додати нового користувача</h2>
+
+<form method="POST" style="margin-bottom: 370px;">
+    {% csrf_token %}
+    <table style="margin: 0 auto; border-collapse: separate; border-spacing: 10px;">
+        {{ form.as_table }}
+    </table>
+    <button type="submit" style="margin-top: 10px; padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Додати користувача
+    </button>
+</form>
+
+<!-- Посилання для повернення -->
+<div style="text-align: center; margin-top: 20px;">
+    <a href="{% url 'user_list' %}" style="text-decoration: underline; color: #007BFF; font-weight: bold;">Повернутися до списку користувачів</a>
+    <br>
+    <a href="/" style="text-decoration: underline; color: #007BFF; font-weight: bold; margin-top: 10px; display: inline-block;">Return to Home</a>
+</div>
+{% endblock %}
+

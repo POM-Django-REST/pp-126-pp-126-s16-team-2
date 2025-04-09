@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Library Management System{% endblock %}</title>
+    <!-- Підключення CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            background-color: #f0f8ff; /* Ніжний блакитний фон */
+            font-family: Arial, sans-serif; /* Зручний шрифт */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Мінімальна висота для заповнення екрану */
+        }
+        header {
+            background-color: #007BFF; /* Синій фон для хедера */
+            color: white;
+            padding: 10px 0;
+        }
+        nav a {
+            text-decoration: underline;
+            color: white;
+            margin: 0 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        main {
+            flex: 1; /* Забезпечує простір між хедером і футером */
+            padding: 20px;
+        }
+        footer {
+            background-color: #333; /* Чорний фон футера */
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav style="text-align: center;">
+            <a href="/" style="text-decoration: underline; margin-right: 15px;">Home</a>
+            <a href="/authors/" style="text-decoration: underline; margin-right: 15px;">Authors</a>
+            <a href="/books/" style="text-decoration: underline; margin-right: 15px;">Books</a>
+            <a href="/users/" style="text-decoration: underline; margin-right: 15px;">Users</a>
+            <a href="/orders/" style="text-decoration: underline; font-weight: bold;">Orders</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>© 2025 Library Management System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

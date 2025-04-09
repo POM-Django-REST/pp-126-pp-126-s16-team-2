@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Author</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        form p { margin: 10px 0; }
+        button {
+            background: #4682b4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        a { color: #4682b4; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>Add New Author</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+            {{ form.name.label_tag }}<br>
+            {{ form.name }}
+        </p>
+
+        <p>
+            {{ form.surname.label_tag }}<br>
+            {{ form.surname }}
+        </p>
+
+        <p>
+            {{ form.patronymic.label_tag }}<br>
+            {{ form.patronymic }}
+        </p>
+        <div class="book-list">
+            <h3>Books:</h3>
+            {{ form.books }}
+            <br>
+            <a href="{% url 'book_create' %}" target="_blank">Add a new book</a>
+        </div>
+        
+        <button type="submit">Save</button>
+    </form>
+    <br>
+    <a href="{% url 'author_list' %}">← Back to list</a>
+</body>
+</html>

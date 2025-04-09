@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authors</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+        .action-links a { margin-right: 10px; }
+        .return-home {
+            text-decoration: underline;
+            color: #007BFF;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Authors</h1>
+
+    <!-- Додаємо посилання для повернення на головну сторінку -->
+    <a href="/" class="return-home">Return to Home</a>
+
+    <a href="{% url 'author_create' %}">Add New Author</a>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for author in authors %}
+        <tr>
+            <td>{{ author.surname }}, {{ author.name }}</td>
+            <td class="action-links">
+                <a href="{% url 'author_edit' author.id %}">Edit</a>
+                <a href="{% url 'author_delete' author.id %}">Delete</a>
+                <a href="{% url 'author_books' author.id %}">Books</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

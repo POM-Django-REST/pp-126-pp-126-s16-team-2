@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Author</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .warning { color: #d9534f; font-weight: bold; }
+        button {
+            background: #d9534f;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin-right: 10px;
+        }
+        a { color: #4682b4; }
+    </style>
+</head>
+<body>
+    <h1>Delete Author</h1>
+    <p class="warning">Are you sure you want to remove the author <b>{{ author.surname }}, {{ author.name }}</b>?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Yes, remove</button>
+        <a href="{% url 'author_list' %}">Cancel</a>
+    </form>
+</body>
+</html>
