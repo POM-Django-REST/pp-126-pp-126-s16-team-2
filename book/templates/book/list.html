@@ -3,10 +3,13 @@
 <head>
     <title>Books</title>
     <style>
-        table { border-collapse: collapse; width: 100%; }
-        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
-        .action-links a { margin-right: 10px; }
-<<<<<<< HEAD
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
         .return-home {
             text-decoration: underline;
             color: #007BFF;
@@ -14,21 +17,40 @@
             margin-bottom: 20px;
             display: inline-block;
         }
-=======
->>>>>>> Daniil
+        a.button-link {
+            margin-right: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #28a745;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .action-links a {
+            margin-right: 10px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .action-links a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
+
     <h1>Books</h1>
-<<<<<<< HEAD
 
-    <!-- Додаємо посилання на головну сторінку -->
-    <a href="/" class="return-home">Return to Home</a>
+    <a href="/" class="return-home">Return to Home</a><br>
 
-=======
->>>>>>> Daniil
-    <a href="{% url 'book_create' %}">Add New Book</a>
-    <a href="{% url 'book_filter' %}">Filter Books</a>
+    <a href="{% url 'book_create' %}" class="button-link">➕ Add New Book</a>
+    <a href="{% url 'book_filter' %}" class="button-link">🔍 Filter Books</a>
 
     <table>
         <tr>
@@ -56,9 +78,6 @@
         </tr>
         {% endfor %}
     </table>
+
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> Daniil

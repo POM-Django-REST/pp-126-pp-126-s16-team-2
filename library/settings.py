@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,13 +39,8 @@ INSTALLED_APPS = [
     'book',
     'author',
     'order',
-<<<<<<< HEAD
-    'users', 
-    'rest_framework', # Додано для роботи з Django REST Framework
-=======
-    'users',  # Оновлене ім'я для додатку Users
+    'users',
     'rest_framework',
->>>>>>> Daniil
 ]
 
 # Вказуємо нову модель користувача
@@ -68,11 +63,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'library.urls'
 
-import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Додаємо шлях до папки templates
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,8 +82,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'library.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -105,8 +97,6 @@ DATABASES = {
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -123,28 +113,19 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+# Static files
 STATIC_URL = '/static/'
 
-# Default primary key field type for models
+# Default auto field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Logger required settings.
-
+# Logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -163,15 +144,13 @@ LOGGING = {
     },
     'formatters': {
         'default': {
-            'format': '%(levelname)s %(asctime)s %(pathname)s line: %(lineno)d '
-                      'message: %(message)s',
+            'format': '%(levelname)s %(asctime)s %(pathname)s line: %(lineno)d message: %(message)s',
             'datefmt': '%d/%m/%Y %I:%M:%S'
         },
     },
 }
-<<<<<<< HEAD
-=======
 
+# REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
@@ -180,4 +159,3 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ]
 }
->>>>>>> Daniil

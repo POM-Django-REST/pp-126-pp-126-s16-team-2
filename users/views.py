@@ -1,31 +1,22 @@
+from rest_framework import viewsets
 from django.shortcuts import render, get_object_or_404, redirect
-<<<<<<< HEAD
-from users.models import User
-from users.forms import UserForm
-from book.models import Book
-
-=======
 from .models import User
 from .forms import UserForm
-from rest_framework import viewsets
 from .serializers import UserSerializer
+from book.models import Book
 
-def get_book_model():
-    from book.models import Book
-    return Book
->>>>>>> Daniil
 
 def user_list_view(request):
     """Відображає список всіх користувачів."""
-    users = User.objects.all()  # Отримання всіх користувачів
+    users = User.objects.all()
     return render(request, "users/user_list.html", {"users": users})
 
 
 def user_detail_view(request, user_id):
     """Відображає деталі конкретного користувача."""
     user = get_object_or_404(User, id=user_id)
-    viewed_books = user.viewed_books.all() if hasattr(user, 'viewed_books') else []  # Переглянуті книги
-    borrowed_books = user.library_member.borrowed_books.all() if hasattr(user, 'library_member') else []  # Взяті книги
+    viewed_books = user.viewed_books.all() if hasattr(user, 'viewed_books') else []
+    borrowed_books = user.borrowed_books.all() if hasattr(user, 'borrowed_books') else []
     return render(request, "users/user_detail.html", {
         "user": user,
         "viewed_books": viewed_books,
@@ -38,8 +29,8 @@ def add_user(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            form.save()  # Збереження нового користувача
-            return redirect('user_list')  # Перенаправлення на список користувачів
+            form.save()
+            return redirect('user_list')
     else:
         form = UserForm()
     return render(request, "users/add_user.html", {"form": form})
@@ -51,7 +42,7 @@ def edit_user(request, user_id):
     if request.method == 'POST':
         form = UserForm(request.POST, instance=user)
         if form.is_valid():
-            form.save()  # Зберігаємо оновлені дані користувача
+            form.save()
             return redirect('user_list')
     else:
         form = UserForm(instance=user)
@@ -66,22 +57,12 @@ def user_book_interaction(request, user_id):
     if request.method == 'POST':
         book_id = request.POST.get("book_id")
         book = get_object_or_404(Book, id=book_id)
-
-        # Логування взаємодії
-        print(f"Перед додаванням: {book.viewed_by_users.all()}")
-
-        book.viewed_by_users.add(user)  # Додаємо користувача до ManyToManyField
-
-        # Логування після взаємодії
-        print(f"Після додавання: {book.viewed_by_users.all()}")
-
+        book.viewed_by_users.add(user)
         return redirect('user_detail', user_id=user_id)
 
     return render(request, "users/user_books.html", {"user": user, "books": books})
-<<<<<<< HEAD
-=======
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
->>>>>>> Daniil

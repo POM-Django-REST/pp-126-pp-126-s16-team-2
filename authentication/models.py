@@ -101,17 +101,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def create(email, password, first_name="", middle_name="", last_name=""):
         if not email or not password:
             raise ValueError("Email and password are required")
-        if len(first_name) <= 20 and len(middle_name) <= 20 and len(last_name) <= 20 and len(email) <= 100 and '@' in email and not CustomUser.objects.filter(email=email).exists():
-            custom_user = CustomUser(
-                email=email,
-                first_name=first_name,
-                middle_name=middle_name,
-                last_name=last_name
-            )
-            custom_user.set_password(password)
-            custom_user.save()
-            return custom_user
-        return None
+        if CustomUser.objects.filter(email=email).exists():
+            return None
+        return CustomUser.objects.create_user(
+            email=email,
+            password=password,
+            first_name=first_name,
+            middle_name=middle_name,
+            last_name=last_name
+    )
+
 
     def to_dict(self):
         return {

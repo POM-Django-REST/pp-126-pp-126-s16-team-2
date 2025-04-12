@@ -1,6 +1,5 @@
 from django import forms
 from .models import Book, LibraryMember
-<<<<<<< HEAD
 from author.models import Author
 
 class BookForm(forms.ModelForm):
@@ -8,16 +7,9 @@ class BookForm(forms.ModelForm):
 
     class Meta:
         model = Book
-        fields = ['name', 'description', 'count', 'authors']
-=======
->>>>>>> Daniil
+        fields = ['name', 'description', 'count', 'authors']  # Або '__all__' якщо потрібно всі поля
 
 class LibraryMemberForm(forms.ModelForm):
     class Meta:
         model = LibraryMember
-        fields = ['user', 'borrowed_books']  # Додайте поля, які потрібні для редагування
-
-class BookForm(forms.ModelForm):
-    class Meta:
-        model = Book
-        fields = '__all__'  # Відображення всіх полів моделі Book
+        fields = ['user', 'borrowed_books']

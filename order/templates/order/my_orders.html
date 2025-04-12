@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center;">My Orders</h2>
+
+<!-- Фільтр за статусом -->
+<form method="get" style="text-align: center; margin-bottom: 20px;">
+    <label for="status">Filter by status:</label>
+    <select name="status" id="status" onchange="this.form.submit()">
+        <option value="">All</option>
+        <option value="Pending" {% if request.GET.status == "Pending" %}selected{% endif %}>Pending</option>
+        <option value="Completed" {% if request.GET.status == "Completed" %}selected{% endif %}>Completed</option>
+        <option value="Shipped" {% if request.GET.status == "Shipped" %}selected{% endif %}>Shipped</option>
+        <option value="Cancelled" {% if request.GET.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+    </select>
+</form>
+
+<table id="orders-table" style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr style="background-color: #007BFF; color: white;">
+            <th onclick="sortTable(0)">Order ID</th>
+            <th onclick="sortTable(1)">Status</th>
+            <th onclick="sortTable(2)">Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+            {% if not request.GET.status or order.status == request.GET.status %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
+                <td>
+                    <a href="{% url 'order-detail' order.id %}">View</a> |
+                    <a href="{% url 'order-edit' order.id %}">Edit</a>
+                </td>
+            </tr>
+            {% endif %}
+        {% empty %}
+            <tr><td colspan="4" style="text-align: center;">You have no orders.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Сортування JS -->
+<script>
+function sortTable(columnIndex) {
+    const table = document.getElementById("orders-table");
+    const rows = Array.from(table.rows).slice(1);
+    const isNumeric = !isNaN(rows[0].cells[columnIndex].innerText.trim());
+
+    rows.sort((a, b) => {
+        let valA = a.cells[columnIndex].innerText.trim();
+        let valB = b.cells[columnIndex].innerText.trim();
+
+        return isNumeric
+            ? parseFloat(valA) - parseFloat(valB)
+            : valA.localeCompare(valB);
+    });
+
+    const tbody = table.querySelector("tbody");
+    rows.forEach(row => tbody.appendChild(row));
+}
+</script>
+{% endblock %}

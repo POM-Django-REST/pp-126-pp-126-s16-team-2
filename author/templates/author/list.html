@@ -3,10 +3,13 @@
 <head>
     <title>Authors</title>
     <style>
-        table { border-collapse: collapse; width: 100%; }
-        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
-        .action-links a { margin-right: 10px; }
-<<<<<<< HEAD
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
         .return-home {
             text-decoration: underline;
             color: #007BFF;
@@ -14,20 +17,38 @@
             margin-bottom: 20px;
             display: inline-block;
         }
-=======
->>>>>>> Daniil
+        a.button-link {
+            text-decoration: none;
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .action-links a {
+            margin-right: 10px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .action-links a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
+
     <h1>Authors</h1>
-<<<<<<< HEAD
 
-    <!-- Додаємо посилання для повернення на головну сторінку -->
     <a href="/" class="return-home">Return to Home</a>
-
-=======
->>>>>>> Daniil
-    <a href="{% url 'author_create' %}">Add New Author</a>
+    <a href="{% url 'author_create' %}" class="button-link">➕ Add New Author</a>
 
     <table>
         <tr>
@@ -36,7 +57,7 @@
         </tr>
         {% for author in authors %}
         <tr>
-            <td>{{ author.surname }}, {{ author.name }}</td>
+            <td>{{ author.surname }} {{ author.name }}</td>
             <td class="action-links">
                 <a href="{% url 'author_edit' author.id %}">Edit</a>
                 <a href="{% url 'author_delete' author.id %}">Delete</a>
@@ -45,9 +66,6 @@
         </tr>
         {% endfor %}
     </table>
+
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> Daniil

@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Author
 from .forms import AuthorForm
-from django.shortcuts import get_object_or_404
 from book.models import Book
+from rest_framework import generics
+from .serializers import AuthorSerializer
+
 
 def author_list(request):
     authors = Author.objects.prefetch_related('books').all()
@@ -18,6 +20,7 @@ def author_create(request):
     else:
         form = AuthorForm()
     return render(request, "author/create.html", {"form": form})
+
 
 def author_delete(request, author_id):
     author = get_object_or_404(Author, id=author_id)
@@ -51,20 +54,14 @@ def author_books(request, author_id):
     return render(request, 'author/author_books.html', {
         'author': author,
         'books': books
-<<<<<<< HEAD
     })
 
-from rest_framework import generics
-from .models import Author
-from .serializers import AuthorSerializer
 
 class AuthorDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
+
 class AuthorCreateView(generics.CreateAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-=======
-    })
->>>>>>> Daniil
